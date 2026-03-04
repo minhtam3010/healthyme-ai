@@ -8,6 +8,7 @@ import UserGoal from "./UserGoal";
 import UserInfo from "./UserInfo";
 import ExerciseCommitment from "./ExerciseCommitment";
 import { checkFields } from "../../helper/helper";
+import { useGenerateContent } from "../../hooks/llm/llm";
 
 export default function Registration() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 420);
@@ -17,6 +18,8 @@ export default function Registration() {
 
   const user = useSelector((state: RootState) => state.user.data);
   const dispatch = useDispatch();
+
+  const { generate, healthResponse } = useGenerateContent();
 
   function handleReset() {
     dispatch(
@@ -63,6 +66,8 @@ export default function Registration() {
         Build your profile
       </p>
 
+      {JSON.stringify(healthResponse)}
+
       {step === "goal" ? (
         <UserGoal isMobile={isMobile} />
       ) : (
@@ -83,6 +88,7 @@ export default function Registration() {
                 padding: 0,
               }}
               onClick={handleBack}
+              disabled={loadingAnalyzeBtn}
             >
               <Flex align="center">
                 <img
@@ -111,6 +117,7 @@ export default function Registration() {
                     padding: 0,
                   }}
                   onClick={handleReset}
+                  disabled={loadingAnalyzeBtn}
                 >
                   <p
                     style={{
@@ -133,6 +140,9 @@ export default function Registration() {
                     const fields = checkFields(user);
                     if (fields?.length === 0) {
                       setLoadingAnalyzeBtn(true);
+                      generate(JSON.stringify(user))?.then(() => {
+                        setLoadingAnalyzeBtn(false);
+                      });
                     }
                   }}
                   disabled={disabledAnalyzeBtn}

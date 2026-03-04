@@ -23,8 +23,6 @@ const UserInfo = ({
     if (disabledAnalyzeBtn) {
       const fields = checkFields(user);
       setNotCompleteFields(fields);
-    } else if (!disabledAnalyzeBtn && notCompleteFields?.length > 0) {
-      setNotCompleteFields([]);
     }
   }, [disabledAnalyzeBtn, user]);
 

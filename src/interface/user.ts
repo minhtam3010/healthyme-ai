@@ -1,3 +1,5 @@
+import type { HealthPlanResponse } from "./health";
+
 export interface User {
   id: string;
   name: string;
@@ -8,4 +10,5 @@ export interface User {
   goal: string;
   goalWeight: number;
   day2Exercise: number; // Time per day exercise
+  health: HealthPlanResponse;
 }

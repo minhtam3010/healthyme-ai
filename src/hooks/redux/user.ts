@@ -20,7 +20,7 @@ export const usersSlice = createSlice({
   name: "users",
   initialState: { data: [] as User[] },
   reducers: {
-    saveUser: (state, action: PayloadAction<User>) => {
+    saveUsers: (state, action: PayloadAction<User>) => {
       state.data.push(action.payload);
     },
     deleteUser: (state, action: PayloadAction<User>) => {
