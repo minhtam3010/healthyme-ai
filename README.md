@@ -1,73 +1,61 @@
-# React + TypeScript + Vite
+# HealthyMe AI - Smart Health Insight & Planner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+HealthyMe AI is a responsive web application that generates personalized, AI-powered health insights and exercise recommendations to help users reach their goal weight. Built with React (TypeScript), Redux Toolkit, Ant Design, and the Gemini LLM API.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **AI-Powered Health Plans:** Generates customized weekly exercise routines and nutrition insights.
+- **Persistent Profiles:** Create multiple user profiles (stored locally using Redux Persist).
+- **Interactive Data Visualization:** View progress and macronutrients using Ant Design charts.
+- **Export to PDF:** Download your full personalized report as a PDF.
 
-## React Compiler
+## How to Run Locally
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+### Prerequisites
 
-## Expanding the ESLint configuration
+- Node.js (v18+)
+- npm or yarn
+- A Gemini API Key
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Setup Instructions
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. Clone the repository (if applicable) and navigate into the project directory:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+   ```bash
+   cd healthyai
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2. Install dependencies:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+   ```bash
+   npm install
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+3. Setup Environment Variables:
+   Create a `.env` file in the root of the project and add your Gemini API Key:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+   ```env
+   VITE_GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+
+4. Start the development server:
+
+   ```bash
+   npm start
+   ```
+
+5. Open your browser and navigate to:
+   [http://localhost:3000](http://localhost:3000)
+
+## Tech Stack
+
+- **Frontend Framework:** React 19 + Vite
+- **Language:** TypeScript
+- **State Management:** Redux Toolkit + Redux Persist
+- **UI & Charts:** Ant Design + Ant Design Plots
+- **LLM Integration:** Google Gemini API
+- **PDF Generation:** html2canvas + jsPDF
+
+## Live Demo
+
+URL:
