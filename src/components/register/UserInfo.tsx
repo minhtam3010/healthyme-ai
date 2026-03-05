@@ -72,6 +72,18 @@ const UserInfo = ({
             />{" "}
             AI is analyzing...
           </span>
+          <span
+            style={{
+              position: "absolute",
+              marginTop: "45px",
+              fontSize: "11px",
+              color: "#666",
+              fontWeight: 500,
+              zIndex: 1,
+            }}
+          >
+            Don't close the browser until AI is done
+          </span>
           <style>{`
             @keyframes shimmer {
               0% { background-position: 100% 0; }
