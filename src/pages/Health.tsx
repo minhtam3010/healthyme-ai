@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import type { RootState } from "../../hooks/redux/store";
+import type { RootState } from "../hooks/redux/store";
 import { Button, Flex } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 
-import { useExportPDF } from "./useExportPDF";
-import ProfileCard from "./ProfileCard";
-import WeeklyExercise from "./WeeklyExercise";
-import NutritionInsights from "./NutritionInsights";
-import ExerciseEffort from "./ExerciseEffort";
-import BodyComposition from "./BodyComposition";
-import WeightProgress from "./WeightProgress";
+import { useExportPDF } from "../hooks/health/useExportPDF";
+import ProfileCard from "../components/health/ProfileCard";
+import WeeklyExercise from "../components/health/WeeklyExercise";
+import NutritionInsights from "../components/health/NutritionInsights";
+import ExerciseEffort from "../components/health/ExerciseEffort";
+import BodyComposition from "../components/health/BodyComposition";
+import WeightProgress from "../components/health/WeightProgress";
 import { useNavigate } from "react-router-dom";
 
 export default function Health() {

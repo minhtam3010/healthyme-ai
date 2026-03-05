@@ -12,22 +12,22 @@ export default function Header() {
           zIndex: 100,
           backgroundColor: "#fff",
           width: "100%",
-          height: "40px",
+          height: "60px",
           borderBottom: "1px solid #ccc",
-          marginBottom: "10px",
+          marginBottom: "15px",
         }}
       >
         <Flex
           align="center"
           style={{
             height: "100%",
-            margin: "0 10px",
+            margin: "0 15px",
           }}
           justify="space-between"
         >
           <Flex
             align="center"
-            gap={"5px"}
+            gap={"8px"}
             style={{
               cursor: "pointer",
             }}
@@ -38,14 +38,14 @@ export default function Header() {
             <img
               src="/logo.png"
               style={{
-                width: "25px",
-                height: "25px",
+                width: "38px",
+                height: "38px",
                 borderRadius: "50%",
               }}
             />
             <p
               style={{
-                fontSize: "14px",
+                fontSize: "21px",
                 color: "#2b8a3e",
                 fontWeight: "bold",
               }}
@@ -56,7 +56,7 @@ export default function Header() {
 
           <p
             style={{
-              fontSize: "13px",
+              fontSize: "20px",
               color: "gray",
               cursor: "pointer",
               userSelect: "none",
@@ -70,7 +70,7 @@ export default function Header() {
         </Flex>
       </div>
 
-      <div style={{ padding: "10px" }}>
+      <div style={{ padding: "15px", zoom: "1.5" }}>
         <Outlet />
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Health from "./components/health/Health";
+import Health from "./pages/Health";
 import Header from "./components/global/Header";
-import Homepage from "./components/homepage/Homepage";
+import Homepage from "./pages/Homepage";
 
 function App() {
   return (

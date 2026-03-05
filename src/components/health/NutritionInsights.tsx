@@ -1,6 +1,6 @@
 import { Card, Flex, Typography } from "antd";
 import { Pie } from "@ant-design/plots";
-import { MACRO_COLORS } from "./constants";
+import { MACRO_COLORS } from "../../constant/constants";
 
 const { Text } = Typography;
 

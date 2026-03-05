@@ -1,6 +1,6 @@
 import { Card, Typography } from "antd";
 import { Pie } from "@ant-design/plots";
-import { ACTIVITY_COLORS } from "./constants";
+import { ACTIVITY_COLORS } from "../../constant/constants";
 
 const { Text } = Typography;
 

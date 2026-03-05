@@ -1,13 +1,13 @@
-import Accounts from "../account/Accounts";
+import Accounts from "../components/account/Accounts";
 import { useState, useEffect } from "react";
-import Registration from "../register/Registration";
+import Registration from "../components/register/Registration";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { saveUser } from "../../hooks/redux/user";
-import type { User } from "../../interface/user";
-import { saveHealth } from "../../hooks/redux/health";
-import type { HealthPlanResponse } from "../../interface/health";
-import type { RootState } from "../../hooks/redux/store";
+import { saveUser } from "../hooks/redux/user";
+import type { User } from "../interface/user";
+import { saveHealth } from "../hooks/redux/health";
+import type { HealthPlanResponse } from "../interface/health";
+import type { RootState } from "../hooks/redux/store";
 
 export default function Homepage() {
   const [register, setRegister] = useState(false);

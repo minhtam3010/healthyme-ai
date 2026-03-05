@@ -1,5 +1,5 @@
 import { Card, Flex, Progress, Typography, Tag, Divider } from "antd";
-import { getBmiColor, getBmiLabel } from "./constants";
+import { getBmiColor, getBmiLabel } from "../../constant/constants";
 
 const { Text } = Typography;
 
