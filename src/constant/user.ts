@@ -25,7 +25,7 @@ export const BASIC_INFO = [
   ],
   [
     {
-      label: "Current Weight",
+      label: "Current Weight(kg)",
       placeholder: "100kg",
       type: "number",
       id: "weight",
@@ -33,7 +33,7 @@ export const BASIC_INFO = [
       max: 200,
     },
     {
-      label: "Height",
+      label: "Height(cm)",
       placeholder: "178cm",
       type: "number",
       id: "height",
@@ -43,7 +43,7 @@ export const BASIC_INFO = [
   ],
   [
     {
-      label: "Goal Weight",
+      label: "Goal Weight(kg)",
       placeholder: "80kg",
       type: "number",
       id: "goalWeight",

@@ -20,7 +20,7 @@ export const usersSlice = createSlice({
   name: "users",
   initialState: { data: [] as User[] },
   reducers: {
-    saveUsers: (state, action: PayloadAction<User>) => {
+    pushUsers: (state, action: PayloadAction<User>) => {
       state.data.push(action.payload);
     },
     deleteUser: (state, action: PayloadAction<User>) => {
@@ -31,4 +31,5 @@ export const usersSlice = createSlice({
 });
 
 export const { saveUser, updateUser } = userSlice.actions;
+export const { pushUsers, deleteUser } = usersSlice.actions;
 export default userSlice.reducer;

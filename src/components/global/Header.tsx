@@ -1,7 +1,8 @@
 import { Flex } from "antd";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const navigate = useNavigate();
   return (
     <div>
       <div
@@ -22,8 +23,18 @@ export default function Header() {
             height: "100%",
             margin: "0 10px",
           }}
+          justify="space-between"
         >
-          <Flex align="center" gap={"5px"}>
+          <Flex
+            align="center"
+            gap={"5px"}
+            style={{
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              navigate("/");
+            }}
+          >
             <img
               src="/logo.png"
               style={{
@@ -42,6 +53,20 @@ export default function Header() {
               WellBuddy
             </p>
           </Flex>
+
+          <p
+            style={{
+              fontSize: "13px",
+              color: "gray",
+              cursor: "pointer",
+              userSelect: "none",
+            }}
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            Members
+          </p>
         </Flex>
       </div>
 

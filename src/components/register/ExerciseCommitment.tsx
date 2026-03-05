@@ -22,7 +22,7 @@ const ExerciseCommitment = () => {
           fontSize: "13px",
         }}
       >
-        Pick how many day you can exercise
+        How many days a week can you exercise?
       </p>
       {COMMITMENT.map((v) => {
         return (

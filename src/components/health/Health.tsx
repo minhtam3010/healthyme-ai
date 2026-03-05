@@ -10,6 +10,7 @@ import WeeklyExercise from "./WeeklyExercise";
 import NutritionInsights from "./NutritionInsights";
 import ExerciseEffort from "./ExerciseEffort";
 import BodyComposition from "./BodyComposition";
+import WeightProgress from "./WeightProgress";
 import { useNavigate } from "react-router-dom";
 
 export default function Health() {
@@ -19,18 +20,15 @@ export default function Health() {
   const navigate = useNavigate();
 
   const [showAll, setShowAll] = useState(false);
-  const { containerRef, handleExportPDF } = useExportPDF(setShowAll, showAll);
+  const { containerRef, handleExportPDF, isExporting } = useExportPDF(
+    setShowAll,
+    showAll,
+  );
 
   const macroBreakdown =
     health.nutrition?.macroBreakdown?.map((m) => ({
       type: m.type,
       value: m.valueInGrams,
-    })) || [];
-
-  const exerciseEffortData =
-    health.exerciseCalendar?.map((e) => ({
-      day: e.day?.slice(0, 3),
-      calories: parseInt(e.caloriesBurned) || 0,
     })) || [];
 
   const bodyParts = health.compositions?.[0]?.body || [];
@@ -42,10 +40,14 @@ export default function Health() {
     })) || [];
 
   useEffect(() => {
-    if (!health || !health.summary || (user.id ?? "") === "") {
+    if (!health || (user.id ?? "") === "") {
       navigate("/");
     }
   }, [health]);
+
+  if (!health) {
+    return null;
+  }
 
   return (
     <div
@@ -56,9 +58,9 @@ export default function Health() {
       }}
     >
       {/* Header */}
-      <div style={{ background: "#fff", padding: "0px 20px 16px" }}>
+      <div style={{ background: "#fff", padding: "0px 10px 5px 10px" }}>
         <Flex justify="space-between" align="center">
-          <p style={{ margin: 0, fontSize: 20, fontWeight: 700 }}>
+          <p style={{ margin: 0, fontSize: "18px", fontWeight: 700 }}>
             Your Health
           </p>
           <Button
@@ -66,6 +68,7 @@ export default function Health() {
             icon={<DownloadOutlined />}
             onClick={handleExportPDF}
             size="small"
+            loading={isExporting}
           >
             Export PDF
           </Button>
@@ -73,14 +76,17 @@ export default function Health() {
       </div>
 
       {/* Captured area — everything inside here is rendered into the PDF */}
-      <div ref={containerRef} style={{ padding: "12px 12px 0" }}>
+      <div ref={containerRef} style={{ padding: "5px 5px 0" }}>
         <ProfileCard user={user} health={health} />
 
-        <WeeklyExercise
-          exerciseCalendar={health.exerciseCalendar || []}
-          showAll={showAll}
-          setShowAll={setShowAll}
-        />
+        {health.weightProgress && user.goalWeight && (
+          <WeightProgress
+            data={health.weightProgress}
+            goalWeight={user.goalWeight}
+          />
+        )}
+
+        <WeeklyExercise exerciseCalendar={health.exerciseCalendar || []} />
 
         <NutritionInsights
           dailyCalories={health.nutrition?.dailyCalories}
@@ -88,7 +94,7 @@ export default function Health() {
           focus={health.nutrition?.dietaryRecommendations?.focus}
         />
 
-        <ExerciseEffort data={exerciseEffortData} />
+        <ExerciseEffort exerciseCalendar={health.exerciseCalendar || []} />
 
         <BodyComposition bodyParts={bodyParts} activityData={activityData} />
       </div>

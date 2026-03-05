@@ -1,5 +1,5 @@
 import { Flex, Input, InputNumber, Select } from "antd";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { BASIC_INFO } from "../../constant/user";
 import { saveUser } from "../../hooks/redux/user";
@@ -14,7 +14,9 @@ const UserInfo = ({
   setDisabledAnalyzeBtn: (val: boolean) => void;
 }) => {
   const user = useSelector((state: RootState) => state.user.data);
+  const llmProcess = useSelector((state: RootState) => state.llm);
   const dispatch = useDispatch();
+  const formRef = useRef<HTMLDivElement>(null);
   const [notCompleteFields, setNotCompleteFields] = useState<
     { id: string; message: string }[]
   >([]);
@@ -33,7 +35,56 @@ const UserInfo = ({
   }, [notCompleteFields]);
 
   return (
-    <div>
+    <div ref={formRef} style={{ position: "relative" }}>
+      {/* Skeleton overlay on top when llmProcess is true */}
+      {llmProcess && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 10,
+            borderRadius: "12px",
+            overflow: "hidden",
+            background:
+              "linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%)",
+            backgroundSize: "400% 100%",
+            animation: "shimmer 1.8s ease-in-out infinite",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <span
+            style={{
+              fontSize: "14px",
+              color: "#1677ff",
+              fontWeight: 600,
+              animation: "aiPulse 1.4s ease-in-out infinite",
+              zIndex: 1,
+            }}
+          >
+            <img
+              src="https://img.icons8.com/?size=100&id=ETVUfl0Ylh1p&format=png&color=000000"
+              style={{
+                width: "15px",
+                height: "15px",
+              }}
+            />{" "}
+            AI is analyzing...
+          </span>
+          <style>{`
+            @keyframes shimmer {
+              0% { background-position: 100% 0; }
+              100% { background-position: -100% 0; }
+            }
+            @keyframes aiPulse {
+              0%, 100% { opacity: 1; }
+              50% { opacity: 0.4; }
+            }
+          `}</style>
+        </div>
+      )}
+
       <p
         style={{
           fontSize: "12px",

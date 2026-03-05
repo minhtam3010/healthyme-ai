@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../hooks/redux/store";
-import { saveUser } from "../../hooks/redux/user";
+import { pushUsers, saveUser } from "../../hooks/redux/user";
 import type { User } from "../../interface/user";
 import { Button, Flex } from "antd";
 import UserGoal from "./UserGoal";
@@ -10,17 +10,22 @@ import ExerciseCommitment from "./ExerciseCommitment";
 import { checkFields } from "../../helper/helper";
 import { useGenerateContent } from "../../hooks/llm/llm";
 import { saveHealth } from "../../hooks/redux/health";
+import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
+import { setLLMProcess } from "../../hooks/redux/llm";
 
 export default function Registration() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 420);
   const [step, setStep] = useState<"goal" | "exercise" | "info">("goal");
   const [disabledAnalyzeBtn, setDisabledAnalyzeBtn] = useState(false);
-  const [loadingAnalyzeBtn, setLoadingAnalyzeBtn] = useState(false);
 
   const user = useSelector((state: RootState) => state.user.data);
+  const llmProcess = useSelector((state: RootState) => state.llm);
   const dispatch = useDispatch();
 
   const { generate, healthResponse } = useGenerateContent();
+
+  const navigate = useNavigate();
 
   function handleReset() {
     dispatch(
@@ -58,8 +63,23 @@ export default function Registration() {
   useEffect(() => {
     if (healthResponse) {
       dispatch(saveHealth(healthResponse));
+      const id = uuidv4();
+      const finalUser = { ...user, id: id, health: healthResponse } as User;
+      dispatch(saveUser(finalUser));
+      dispatch(pushUsers(finalUser));
+      dispatch(setLLMProcess(false));
+
+      navigate("/health", {
+        replace: true,
+      });
     }
   }, [healthResponse]);
+
+  useEffect(() => {
+    if (llmProcess) {
+      generate(JSON.stringify(user));
+    }
+  }, [llmProcess]);
 
   return (
     <div
@@ -77,7 +97,7 @@ export default function Registration() {
             textAlign: "center",
           }}
         >
-          Build your profile
+          Create your Profile
         </p>
 
         {step === "goal" ? (
@@ -100,7 +120,7 @@ export default function Registration() {
                   padding: 0,
                 }}
                 onClick={handleBack}
-                disabled={loadingAnalyzeBtn}
+                disabled={llmProcess}
               >
                 <Flex align="center">
                   <img
@@ -129,7 +149,7 @@ export default function Registration() {
                       padding: 0,
                     }}
                     onClick={handleReset}
-                    disabled={loadingAnalyzeBtn}
+                    disabled={llmProcess}
                   >
                     <p
                       style={{
@@ -151,17 +171,16 @@ export default function Registration() {
                       setDisabledAnalyzeBtn(true);
                       const fields = checkFields(user);
                       if (fields?.length === 0) {
-                        setLoadingAnalyzeBtn(true);
-                        generate(JSON.stringify(user))?.then(() => {
-                          setLoadingAnalyzeBtn(false);
-                        });
+                        console.log("yes");
+
+                        dispatch(setLLMProcess(true));
                       }
                     }}
                     disabled={disabledAnalyzeBtn}
-                    loading={loadingAnalyzeBtn}
+                    loading={llmProcess}
                   >
                     <Flex align="center" gap={"3px"}>
-                      {!loadingAnalyzeBtn && (
+                      {!llmProcess && (
                         <img
                           src="https://img.icons8.com/?size=100&id=T1daBn7EyQ15&format=png&color=000000"
                           style={{

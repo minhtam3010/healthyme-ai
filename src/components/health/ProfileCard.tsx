@@ -37,9 +37,10 @@ export default function ProfileCard({ user, health }: ProfileCardProps) {
         <Progress
           type="circle"
           percent={bmiPercent}
-          size={70}
+          size={90}
+          strokeWidth={8}
           strokeColor={bmiColor}
-          trailColor="#e0e7ff"
+          railColor="#e0e7ff"
           format={() => (
             <div style={{ textAlign: "center", lineHeight: 1.2 }}>
               <div style={{ fontSize: 14, fontWeight: 700 }}>{bmi}</div>
@@ -76,7 +77,7 @@ export default function ProfileCard({ user, health }: ProfileCardProps) {
           <p style={{ margin: "2px 0 8px", fontSize: 12, color: "#888" }}>
             Age: {user.age}&nbsp;•&nbsp;Status:{" "}
             <Tag color="blue" style={{ marginLeft: 2 }}>
-              {health.summary.status}
+              {health?.summary?.status}
             </Tag>
           </p>
           <Flex gap={24}>

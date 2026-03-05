@@ -2,25 +2,17 @@ import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-/**
- * Custom hook that provides a containerRef to wrap the capturable area
- * and a handleExportPDF function that:
- *  - Temporarily expands the exercise grid (via setShowAll) before capture
- *  - Waits for fonts and React re-render
- *  - Captures with html2canvas (Arial override to fix web-font spacing)
- *  - Splits the canvas into A4 pages, snapping cuts to card / row boundaries
- *  - Restores the expand state after saving
- */
 export function useExportPDF(
   setShowAll: (v: boolean) => void,
   showAll: boolean,
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   const handleExportPDF = async () => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || isExporting) return;
+    setIsExporting(true);
 
-    // Expand exercise to grid view so all 7 days appear in the PDF
     const wasExpanded = showAll;
     setShowAll(true);
     await new Promise((resolve) => setTimeout(resolve, 400));
@@ -29,7 +21,7 @@ export function useExportPDF(
       await document.fonts.ready;
 
       const canvas = await html2canvas(containerRef.current, {
-        scale: 2,
+        scale: 4,
         useCORS: true,
         allowTaint: true,
         backgroundColor: "white",
@@ -47,7 +39,7 @@ export function useExportPDF(
       const pdf = new jsPDF("p", "mm", "a4");
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfPageHeight = pdf.internal.pageSize.getHeight();
-      const captureScale = 2;
+      const captureScale = 4;
       const pageHeightPx = (pdfPageHeight * canvas.width) / pdfWidth;
 
       // ── Collect safe page-break points ────────────────────────────────────
@@ -134,11 +126,11 @@ export function useExportPDF(
       console.error("PDF export failed:", err);
     } finally {
       setShowAll(wasExpanded);
+      setIsExporting(false);
     }
   };
 
-  return { containerRef, handleExportPDF };
+  return { containerRef, handleExportPDF, isExporting };
 }
 
-// Re-export useState so WeeklyExercise can share its toggle with the parent
 export { useState };

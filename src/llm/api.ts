@@ -8,13 +8,28 @@ export interface GenerateLLMOptions {
   systemInstruction: string;
 }
 
+export type LLMResult =
+  | { data: HealthPlanResponse }
+  | { rateLimitMs: number }
+  | null;
+
+/** Parse "Please retry in 39.34s" → milliseconds (+20s safety buffer) */
+function parseRetryAfterMs(errorText: string): number {
+  const BUFFER_MS = 20_000; // extra 20s so the quota is definitely cleared
+  const match = errorText.match(/retry in ([\d.]+)s/i);
+  if (match) {
+    return Math.ceil(parseFloat(match[1]) * 1000) + BUFFER_MS;
+  }
+  return 60_000 + BUFFER_MS; // default 80s fallback
+}
+
 /**
  * Sends a request to the Gemini API to generate content.
  */
 export async function generateLLMContent({
   input,
   systemInstruction,
-}: GenerateLLMOptions): Promise<HealthPlanResponse | null> {
+}: GenerateLLMOptions): Promise<LLMResult> {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_ID}:${GENERATE_CONTENT_API}?key=${import.meta.env.VITE_GEMINI_API_KEY}`;
 
   const requestBody = {
@@ -252,6 +267,9 @@ export async function generateLLMContent({
 
     if (!response.ok) {
       const errorText = await response.text();
+      if (response.status === 429) {
+        return { rateLimitMs: parseRetryAfterMs(errorText) };
+      }
       throw new Error(
         `Gemini API Error (${response.status} ${response.statusText}): ${errorText}`,
       );
@@ -271,7 +289,7 @@ export async function generateLLMContent({
     }
 
     if (fullText) {
-      return JSON.parse(fullText) as HealthPlanResponse;
+      return { data: JSON.parse(fullText) as HealthPlanResponse };
     }
 
     return null;

@@ -20,13 +20,18 @@ export default function NutritionInsights({
   macroBreakdown,
   focus,
 }: NutritionInsightsProps) {
+  const total = macroBreakdown.reduce((sum, m) => sum + m.value, 0);
+
+  const getPercent = (value: number) =>
+    total > 0 ? Math.round((value / total) * 100) : 0;
+
   return (
     <Card style={{ marginBottom: 12, borderRadius: 16 }}>
       <p style={{ margin: "0 0 12px", fontSize: 16, fontWeight: 700 }}>
         Nutrition Insights
       </p>
 
-      <Flex gap={20} align="center">
+      <Flex gap={20} align="center" wrap="wrap" justify="center">
         {/* Donut chart with centred kcal label */}
         <div
           style={{
@@ -36,6 +41,7 @@ export default function NutritionInsights({
             position: "relative",
           }}
         >
+          {/* Centre label */}
           <div
             style={{
               position: "absolute",
@@ -66,6 +72,7 @@ export default function NutritionInsights({
               KCAL
             </span>
           </div>
+
           <Pie
             data={macroBreakdown}
             angleField="value"
@@ -75,11 +82,20 @@ export default function NutritionInsights({
             width={140}
             legend={false as unknown as undefined}
             scale={{ color: { range: MACRO_COLORS } }}
+            label={{
+              text: (d: MacroItem) => `${getPercent(d.value)}%`,
+              style: {
+                fontSize: 8,
+                fontWeight: 700,
+                fill: "#fff",
+              },
+            }}
+            tooltip={false}
           />
         </div>
 
-        {/* Legend */}
-        <Flex vertical gap={8}>
+        {/* Legend with percentages */}
+        <Flex vertical gap={8} style={{ minWidth: 100 }}>
           {macroBreakdown.map((m, i) => (
             <Flex key={i} align="center" gap={8}>
               <span
@@ -91,7 +107,14 @@ export default function NutritionInsights({
                   flexShrink: 0,
                 }}
               />
-              <Text style={{ fontSize: 13 }}>{m.type}</Text>
+              <Text style={{ fontSize: 13, whiteSpace: "nowrap" }}>
+                {m.type}
+              </Text>
+              <Text
+                style={{ fontSize: 12, color: "#888", whiteSpace: "nowrap" }}
+              >
+                {getPercent(m.value)}%
+              </Text>
             </Flex>
           ))}
         </Flex>

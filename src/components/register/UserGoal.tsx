@@ -1,10 +1,11 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { defaultAction, COLORS, BORDER_COLORS } from "../../constant/user";
 import { saveUser } from "../../hooks/redux/user";
-import type { User } from "../../interface/user";
+import type { RootState } from "../../hooks/redux/store";
 
 const UserGoal = ({ isMobile }: { isMobile: boolean }) => {
   const dispatch = useDispatch();
+  const user = useSelector((root: RootState) => root.user.data);
 
   return (
     <div
@@ -20,7 +21,7 @@ const UserGoal = ({ isMobile }: { isMobile: boolean }) => {
           fontSize: "13px",
         }}
       >
-        Pick goal you wanna aim
+        Select your primary goal
       </p>
       <div
         style={{
@@ -61,7 +62,7 @@ const UserGoal = ({ isMobile }: { isMobile: boolean }) => {
                 e.currentTarget.style.borderBottom = `2px solid ${BORDER_COLORS[i]}`;
               }}
               onClick={() => {
-                dispatch(saveUser({ goal: a } as User));
+                dispatch(saveUser({ ...user, goal: a }));
               }}
             >
               <p
