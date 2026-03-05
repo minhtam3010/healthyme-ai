@@ -7,13 +7,16 @@ const UserGoal = ({ isMobile }: { isMobile: boolean }) => {
   const dispatch = useDispatch();
 
   return (
-    <div>
+    <div
+      style={{
+        maxWidth: "440px",
+      }}
+    >
       <p
         style={{
           textAlign: "center",
           fontStyle: "italic",
           color: "gray",
-          marginTop: "3px",
           fontSize: "13px",
         }}
       >
@@ -35,7 +38,10 @@ const UserGoal = ({ isMobile }: { isMobile: boolean }) => {
               key={a}
               style={{
                 flex: isMobile ? "1 1 300px" : undefined,
-                width: "150px",
+                width:
+                  !isMobile && i === defaultAction?.length - 1
+                    ? "320px"
+                    : "150px",
                 borderRadius: "12px",
                 padding: "5px",
                 textAlign: "center",
