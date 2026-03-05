@@ -15,6 +15,14 @@ export function useExportPDF(
 
     const wasExpanded = showAll;
     setShowAll(true);
+
+    // Temporarily remove zoom so html2canvas bounds are correct
+    const zoomContainer = document.getElementById("main-content-container");
+    const originalZoom = zoomContainer ? zoomContainer.style.zoom : "";
+    if (zoomContainer) {
+      zoomContainer.style.zoom = "1";
+    }
+
     await new Promise((resolve) => setTimeout(resolve, 400));
 
     try {
@@ -125,6 +133,9 @@ export function useExportPDF(
     } catch (err) {
       console.error("PDF export failed:", err);
     } finally {
+      if (zoomContainer) {
+        zoomContainer.style.zoom = originalZoom;
+      }
       setShowAll(wasExpanded);
       setIsExporting(false);
     }

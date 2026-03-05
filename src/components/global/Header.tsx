@@ -70,7 +70,7 @@ export default function Header() {
         </Flex>
       </div>
 
-      <div style={{ padding: "15px", zoom: "1.5" }}>
+      <div id="main-content-container" style={{ padding: "15px", zoom: "1.5" }}>
         <Outlet />
       </div>
     </div>
