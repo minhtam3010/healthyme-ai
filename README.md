@@ -58,4 +58,4 @@ HealthyMe AI is a responsive web application that generates personalized, AI-pow
 
 ## Live Demo
 
-URL:
+URL: https://healthyme-ai-pied.vercel.app/
