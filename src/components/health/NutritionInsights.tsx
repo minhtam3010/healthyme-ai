@@ -13,12 +13,14 @@ interface NutritionInsightsProps {
   dailyCalories?: number | string;
   macroBreakdown: MacroItem[];
   focus?: string;
+  food?: string;
 }
 
 export default function NutritionInsights({
   dailyCalories,
   macroBreakdown,
   focus,
+  food,
 }: NutritionInsightsProps) {
   const total = macroBreakdown.reduce((sum, m) => sum + m.value, 0);
 
@@ -130,6 +132,18 @@ export default function NutritionInsights({
           }}
         >
           <Text strong>Focus:</Text> {focus}
+        </p>
+      )}
+      {food && (
+        <p
+          style={{
+            marginTop: 10,
+            marginBottom: 0,
+            fontSize: 12,
+            color: "#888",
+          }}
+        >
+          <Text strong>Food:</Text> {food}
         </p>
       )}
     </Card>

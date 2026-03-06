@@ -92,6 +92,7 @@ export default function Health() {
           dailyCalories={health.nutrition?.dailyCalories}
           macroBreakdown={macroBreakdown}
           focus={health.nutrition?.dietaryRecommendations?.focus}
+          food={health.nutrition?.dietaryRecommendations?.suggestedFoods}
         />
 
         <ExerciseEffort exerciseCalendar={health.exerciseCalendar || []} />
